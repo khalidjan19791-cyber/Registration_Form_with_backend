@@ -8,7 +8,7 @@ import { FaEye } from "react-icons/fa";
 import { IoMdEyeOff } from "react-icons/io";
 
 const validationSchema = yup.object({
-  name: yup.string().trim().required("First Name is required"),
+  name: yup.string().trim().required("Name is required"),
   email: yup
     .string()
     .trim()
@@ -99,7 +99,7 @@ export default function Sign_up() {
                   name="password"
                   placeholder="Enter Your Password"
                   className="w-full max-w-sm p-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all duration-300 shadow-sm hover:shadow-md"
-                  // type="password"
+                   
                   type={showPassword ? "password" : "text"}
                 />
                 <div
