@@ -4,6 +4,7 @@ const cors = require("cors");
 const connectDB = require("./db");
 const auth = require("./middleware/auth");
 const nodemailer = require("nodemailer");
+const path=require("path")
 
 const app = express();
 // middleware
@@ -29,6 +30,12 @@ app.post("/send-email", async (req, res) => {
       to: to,
       subject: subject,
       text: text,
+      attachments:[
+        {
+          filename:'first.pdf',
+          path:path.join(__dirname,'files','first.pdf')
+        }
+      ]
     });
     res.json({ message: "Email Send Successfully!!", info });
   } catch (error) {
