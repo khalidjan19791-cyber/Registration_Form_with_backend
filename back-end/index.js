@@ -3,12 +3,38 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./db");
 const auth = require("./middleware/auth");
+const nodemailer = require("nodemailer");
 
 const app = express();
-
 // middleware
 app.use(cors());
 app.use(express.json());
+
+// sending email
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: "www.jan456.com@gmail.com",
+    pass: "qeipcczthpmwwmnj",
+  },
+});
+
+app.post("/send-email", async (req, res) => {
+  const { to, subject, text } = req.body;
+  try {
+    const info = await transporter.sendMail({
+      from: '"Janam" <www.jan456.com@gmail.com> ',
+      to: to,
+      subject: subject,
+      text: text,
+    });
+    res.json({ message: "Email Send Successfully!!", info });
+  } catch (error) {
+    res.status(500).json({ message: "Faild to send email", error });
+  }
+});
 
 // connect DB
 connectDB();

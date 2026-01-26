@@ -6,6 +6,7 @@ import axios from "axios";
 import { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { IoMdEyeOff } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = yup.object({
   email: yup
@@ -30,20 +31,57 @@ const validationSchema = yup.object({
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
+  // old login function
+  // const handleLogin = async (values, { resetForm }) => {
+  //   try {
+  //     const res = await axios.post(
+  //       "http://localhost:5000/api/users/login",{
+
+  //         values,
+  //       }
+
+  //     );
+
+  //     alert(res.data.message);
+
+  //     resetForm();
+  //   } catch (error) {
+  //     alert(error.response?.data?.message || "Something went wrong");
+  //   }
+  // };
+
+  // new version of login function
+
   const handleLogin = async (values, { resetForm }) => {
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/users/login",
-        values,
-      );
+      // Send login request
+      const res = await axios.post("http://localhost:5000/api/users/login", {
+        email: values.email,
+        password: values.password,
+      });
 
-      alert(res.data.message);
+      const data = res.data;
 
-      resetForm();
+      // Check if login successful
+      if (res.status === 200) {
+        // Save JWT token in localStorage
+        localStorage.setItem("token", data.token);
+
+        // Redirect user to send email page
+        navigate("/send-email");
+
+        // Reset form
+        resetForm();
+      } else {
+        alert(data.message);
+      }
     } catch (error) {
       alert(error.response?.data?.message || "Something went wrong");
     }
   };
+
   return (
     <div>
       <div className="w-[25vw] border-black border-2 mx-auto p-6 bg-gray-300 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out bg-amber-20">
