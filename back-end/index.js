@@ -25,7 +25,7 @@ app.post("/send-email", async (req, res) => {
   const { to, subject, text } = req.body;
   try {
     const info = await transporter.sendMail({
-      from: '"Janam" <www.jan456.com@gmail.com> ',
+      from: '"Abasyninan" <www.jan456.com@gmail.com> ',
       to: to,
       subject: subject,
       text: text,
